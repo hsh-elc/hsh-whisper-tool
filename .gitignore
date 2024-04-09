@@ -1,0 +1,6 @@
+/WhisperGuiVirtualEnviorment/
+/.DS_Store
+/__pycache__/
+/test/
+/translateTest.py
+/keys.py
