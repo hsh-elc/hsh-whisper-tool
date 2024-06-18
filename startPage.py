@@ -98,28 +98,10 @@ class StartPage(Page):
         self.create_separator()
 
         # Third step
-        # Select if the subtitles should be in english as well
-
-        # Label for the selection for the language of the subtitles
-        language_select_label = self.create_label(
-            "3. Select the languages for subtitles"
-        )
-
-        # Choose option for the desired language
-        self.language_checkbox_variables = []
-        for item in Constants.languages:
-            self.language_checkbox_variables.append(BooleanVar())
-
-        self.create_checkboxes(self.language_checkbox_variables, Constants.languages)
-
-        # Separator for the third segment
-        self.create_separator()
-
-        # Fourth step
         # Start the process
 
         # Label for the start of the transcription
-        startButtonLabel = self.create_label("4. Start the transcription")
+        startButtonLabel = self.create_label("3. Start the transcription")
 
         # Button for starting the process
         startButton = self.create_button("Start", self.start_transcription)
@@ -232,39 +214,28 @@ class StartPage(Page):
             format_checkbox_selected = self.check_if_checkbox_is_selected(
                 self.format_checkbox_variables
             )
-            language_checkbox_selected = self.check_if_checkbox_is_selected(
-                self.language_checkbox_variables
-            )
             if (
                 self.file_path is None
                 and not format_checkbox_selected
-                and not language_checkbox_selected
             ):
-                self.error_label.configure(text="Select a file, a filetype and a language")
+                self.error_label.configure(text="Select a file and a filetype")
                 return
-            elif not format_checkbox_selected and not language_checkbox_selected:
-                self.error_label.configure(text="Select a filetype and a language")
             elif self.file_path is None and not format_checkbox_selected:
                 self.error_label.configure(text="Select a file and a filetype")
-            elif self.file_path is None and not language_checkbox_selected:
-                self.error_label.configure(text="Select a file and a language")
             elif self.file_path is None:
                 self.error_label.configure(text="Select a file")
                 return
             elif not format_checkbox_selected:
                 self.error_label.configure(text="Select a filetype")
                 return
-            elif not language_checkbox_selected:
-                self.error_label.configure(text="Select a language")
 
             else:
                 self.error_label.configure(text="")
                 self.progress_label.configure(text="In progress", foreground="red")
                 self.update()  # needed to display the In progress otherwise the frame for displaying it wouldn't be rendered
                 filetypes = self.checkbox_variables_to_string_list_file_types()
-                languages = self.checkbox_variables_to_string_list_languages()
                 self.subtitle_service.create_subtitles(
-                    self.file_path, languages, filetypes, self.bulk_var.get()
+                    self.file_path, filetypes, self.bulk_var.get()
                 )
                 self.progress_label.configure(text="DONE", foreground="green")
                 saved_to = (
@@ -297,13 +268,6 @@ class StartPage(Page):
             if item.get():
                 format_list.append(Constants.subtitle_types[index])
         return format_list
-
-    def checkbox_variables_to_string_list_languages(self) -> list[str]:
-        language_list = []
-        for index, item in enumerate(self.language_checkbox_variables):
-            if item.get():
-                language_list.append(Constants.language_abbreviations[index])
-        return language_list
 
     def check_if_checkbox_is_selected(self, checkboxes: list[BooleanVar]) -> bool:
         for item in checkboxes:
