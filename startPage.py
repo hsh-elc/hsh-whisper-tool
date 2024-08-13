@@ -220,9 +220,7 @@ class StartPage(Page):
             ):
                 self.error_label.configure(text="Select a file and a filetype")
                 return
-            elif self.file_path is None and not format_checkbox_selected:
-                self.error_label.configure(text="Select a file and a filetype")
-            elif self.file_path is None:
+            elif self.file_path is None or self.file_path == "File Opened:\n...":
                 self.error_label.configure(text="Select a file")
                 return
             elif not format_checkbox_selected:
@@ -255,10 +253,13 @@ class StartPage(Page):
             filetypes=(("Video Files", "*.mp4"), ("Sound File", "*.mp3")),
         )
 
-        # Showing the last 25 chars from the path to the user
-        self.label_chosen_file.configure(
-            text="File Opened:\n..." + self.file_path[len(self.file_path) - 25 :]
-        )
+        if self.file_path == "":
+            self.file_path = None
+        else:
+            # Showing the last 25 chars from the path to the user
+            self.label_chosen_file.configure(
+                text="File Opened:\n..." + self.file_path[len(self.file_path) - 25 :]
+            )
 
     # converts the checkbox variables from the format/filetypes and converts the booleans into
     # the coherent string variables
