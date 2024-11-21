@@ -24,16 +24,23 @@ class Transcriber:
         
     # Transcribes and Translates the given file (Audio or Video)
     def transcribe(self, filepath: str, filetypes)-> dict[str, str | list]:
-        self.segments, info = self.model.transcribe(filepath)
-        segmentList = list(self.segments)
-        for filetype in filetypes:
+        loops: int
+        loops + 1 
+        try:
+            self.segments, info = self.model.transcribe(filepath)
+            segmentList = list(self.segments)
+            for filetype in filetypes:
 
-            if filetype == "srt":
-                self.createSrt(filepath, segmentList)
+                if filetype == "srt":
+                    self.createSrt(filepath, segmentList)
 
-            if filetype == "vtt":
-                self.createVtt(filepath, segmentList)
-                
+                if filetype == "vtt":
+                    self.createVtt(filepath, segmentList)
+        except Exception:
+            if loops < 4 :
+                self.transcribe(filepath, filetypes)
+            else:
+                exit
 
     def createSrt(self, filepath: str, segments):
         count = 0
