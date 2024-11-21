@@ -6,4 +6,4 @@ languages = ["german", "english"]
 language_abbreviations = ["de", "en"]
 
 # model size for whisper
-model_size = "medium" 
+model_size = "large-v3" 
