@@ -33,5 +33,5 @@ class SubtitleService:
                 file_path = os.path.join(path, file)
                 transcription_response = self.translator.transcribe(file_path, filetypes)
             return
-
-        transcription_response = self.translator.transcribe(self.file_path, filetypes)
+        else: 
+            transcription_response = self.translator.transcribe(self.file_path, filetypes)

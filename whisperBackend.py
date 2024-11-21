@@ -20,7 +20,7 @@ class Transcriber:
     def __init__(self) -> None:
         os.environ['KMP_DUPLICATE_LIB_OK']='True'
         torch.cuda.is_available()
-        self.model = stable_whisper.load_faster_whisper(Constants.model_size)
+        self.model = stable_whisper.load_faster_whisper(Constants.model_size, device="cuda", compute_type="int8")
         
     # Transcribes and Translates the given file (Audio or Video)
     def transcribe(self, filepath: str, filetypes)-> dict[str, str | list]:
