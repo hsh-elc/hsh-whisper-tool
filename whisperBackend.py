@@ -24,7 +24,7 @@ class Transcriber:
         
     # Transcribes and Translates the given file (Audio or Video)
     def transcribe(self, filepath: str, filetypes)-> dict[str, str | list]:
-        loops: int
+        loops: int = 0
         loops + 1 
         try:
             self.segments, info = self.model.transcribe(filepath)
