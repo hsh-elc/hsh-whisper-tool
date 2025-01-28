@@ -7,11 +7,12 @@ import torch
 import math
 
 
-def convert_seconds_to_hms(seconds):
+def convert_seconds_to_hms(seconds, is_vtt: bool = False):
     hours, remainder = divmod(seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
     milliseconds = math.floor((seconds % 1) * 1000)
-    output = f"{int(hours):02}:{int(minutes):02}:{int(seconds):02}.{milliseconds:03}"
+    separator = '.' if is_vtt else ','
+    output = f"{int(hours):02}:{int(minutes):02}:{int(seconds):02}{separator}{milliseconds:03}"
     return output
 
 
@@ -58,7 +59,7 @@ class Transcriber:
         with open(filepath.split(".")[0] + ".vtt", 'w') as f:  # Open file for writing
             f.write("WEBVTT\n\n")
             for segment in segments:
-                duration = f"{convert_seconds_to_hms(segment.start)} --> {convert_seconds_to_hms(segment.end)}\n"
+                duration = f"{convert_seconds_to_hms(segment.start), True} --> {convert_seconds_to_hms(segment.end), True}\n"
                 text = f"{segment.text.lstrip()}\n\n"
 
                 f.write(f"{duration}{text}")  # Write formatted string to the file
